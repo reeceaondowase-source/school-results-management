@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Greenwood High | Login</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="auth-shell">
+      <div class="auth-card">
+        <div class="brand-block">
+          <div class="brand-mark">C</div>
+          <div>
+            <h1>Greenwood High</h1>
+            <p>School results portal</p>
+          </div>
+        </div>
+
+        <h2>Sign in</h2>
+        <% if (error) { %>
+          <div class="error-box"><%= error %></div>
+        <% } %>
+
+        <form method="POST" action="/login" class="auth-form">
+          <label>
+            Email
+            <input type="email" name="email" required value="admin@greenwoodhigh.edu" />
+          </label>
+
+          <label>
+            Password
+            <input type="password" name="password" required value="admin123" />
+          </label>
+
+          <button type="submit" class="button button-primary auth-button">Login</button>
+        </form>
+
+        <div class="login-foot">
+          <span>Default admin account</span>
+          <small>admin@greenwoodhigh.edu / admin123</small>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

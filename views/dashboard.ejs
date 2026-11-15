@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Greenwood High</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="/dashboard">
+          <span class="brand-mark">C</span>
+          <span class="brand-name">classroom<span class="brand-dot">.</span></span>
+        </a>
+
+        <div class="school-switcher">
+          <span class="school-avatar">GH</span>
+          <span class="school-label">
+            <strong>Greenwood High</strong>
+            <small>School workspace</small>
+          </span>
+        </div>
+
+        <p class="nav-caption">DASHBOARD</p>
+        <nav class="main-nav">
+          <a class="nav-link active" href="/dashboard"><span class="nav-icon">▦</span>Overview</a>
+          <a class="nav-link" href="/students"><span class="nav-icon">♙</span>Students</a>
+          <a class="nav-link" href="/results"><span class="nav-icon">▤</span>Results</a>
+          <a class="nav-link" href="/reports"><span class="nav-icon">▧</span>Reports</a>
+          <a class="nav-link" href="/logout"><span class="nav-icon">↩</span>Logout</a>
+        </nav>
+      </aside>
+
+      <main class="main-content dashboard-page">
+        <header class="topbar">
+          <div class="breadcrumbs">
+            <span>Greenwood High</span>
+            <span class="crumb-slash">/</span>
+            <strong>Overview</strong>
+          </div>
+
+          <div class="topbar-actions">
+            <span class="term-pill"><span class="status-dot"></span> 2024 / 2025 · Term 2</span>
+            <span class="top-avatar"><%= user.name.split(' ').map(part => part[0]).slice(0,2).join('').toUpperCase() %></span>
+          </div>
+        </header>
+
+        <section class="page-heading">
+          <div>
+            <p class="eyebrow">SCHOOL INSIGHTS</p>
+            <h1>Good morning, <%= user.name %></h1>
+            <p class="subheading">Your school performance dashboard is ready.</p>
+          </div>
+        </section>
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <div class="stat-top">
+              <span>Total students</span>
+              <span class="stat-icon indigo">♙</span>
+            </div>
+            <div class="stat-value"><%= totalStudents %></div>
+            <div class="stat-foot"><span class="trend positive">Active roster</span></div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-top">
+              <span>Results recorded</span>
+              <span class="stat-icon mint">▤</span>
+            </div>
+            <div class="stat-value"><%= totalResults %></div>
+            <div class="stat-foot"><span class="trend positive">This term</span></div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-top">
+              <span>Average score</span>
+              <span class="stat-icon amber">✳</span>
+            </div>
+            <div class="stat-value"><%= averageScore %><small class="value-unit">%</small></div>
+            <div class="stat-foot"><span class="trend positive">Across all subjects</span></div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-top">
+              <span>Total classes</span>
+              <span class="stat-icon rose">▣</span>
+            </div>
+            <div class="stat-value"><%= allClasses.length %></div>
+            <div class="stat-foot"><span class="trend neutral">Academic structure</span></div>
+          </article>
+        </div>
+
+        <div class="dashboard-grid">
+          <article class="panel performance-panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Class performance</h2>
+                <p>Average scores by class</p>
+              </div>
+            </div>
+
+            <div class="chart-wrap">
+              <div class="chart-y-labels">
+                <span>100</span><span>75</span><span>50</span><span>25</span><span>0</span>
+              </div>
+              <div class="chart-area">
+                <div class="chart-gridlines"><i></i><i></i><i></i><i></i><i></i></div>
+                <div class="chart-bars">
+                  <% classPerformance.forEach((item, index) => { const barHeight = Math.max(5, item.average_score); %>
+                    <div class="chart-bar-group">
+                      <div class="chart-bar" style="height: <%= barHeight %>%;"></div>
+                      <span><%= item.class_name.replace('Grade ', 'Gr ') %></span>
+                    </div>
+                  <% }) %>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel subject-panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Subject overview</h2>
+                <p>Average score by subject</p>
+              </div>
+            </div>
+
+            <div class="subject-list">
+              <% subjectPerformance.forEach((subject) => { %>
+                <div class="subject-item">
+                  <span class="subject-name"><%= subject.subject_name %></span>
+                  <div class="subject-track">
+                    <div class="subject-fill" style="width: <%= Math.min(100, Math.max(0, subject.average_score)) %>%; background: linear-gradient(90deg,#8575ef,#6f60ea);"></div>
+                  </div>
+                  <span class="subject-score"><%= subject.average_score %>%</span>
+                </div>
+              <% }) %>
+            </div>
+          </article>
+        </div>
+
+        <article class="panel table-panel">
+          <div class="panel-heading">
+            <div>
+              <h2>Recent results</h2>
+              <p>Latest marks entered by staff</p>
+            </div>
+          </div>
+
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>STUDENT</th>
+                  <th>CLASS</th>
+                  <th>SUBJECT</th>
+                  <th>ASSESSMENT</th>
+                  <th>SCORE</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% recentResults.forEach((result) => { %>
+                  <tr>
+                    <td><%= result.first_name %> <%= result.last_name %></td>
+                    <td><%= result.class_name %></td>
+                    <td><%= result.subject_name %></td>
+                    <td><%= result.assessment %></td>
+                    <td><span class="score-cell"><%= result.score %></span></td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </main>
+    </div>
+  </body>
+</html>

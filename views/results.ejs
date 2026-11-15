@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Results | Greenwood High</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="/dashboard">
+          <span class="brand-mark">C</span>
+          <span class="brand-name">classroom<span class="brand-dot">.</span></span>
+        </a>
+
+        <div class="school-switcher">
+          <span class="school-avatar">GH</span>
+          <span class="school-label">
+            <strong>Greenwood High</strong>
+            <small>School workspace</small>
+          </span>
+        </div>
+
+        <p class="nav-caption">RECORDS</p>
+        <nav class="main-nav">
+          <a class="nav-link" href="/dashboard"><span class="nav-icon">▦</span>Overview</a>
+          <a class="nav-link" href="/students"><span class="nav-icon">♙</span>Students</a>
+          <a class="nav-link active" href="/results"><span class="nav-icon">▤</span>Results</a>
+          <a class="nav-link" href="/reports"><span class="nav-icon">▧</span>Reports</a>
+          <a class="nav-link" href="/logout"><span class="nav-icon">↩</span>Logout</a>
+        </nav>
+      </aside>
+
+      <main class="main-content dashboard-page">
+        <header class="topbar">
+          <div class="breadcrumbs">
+            <span>Greenwood High</span>
+            <span class="crumb-slash">/</span>
+            <strong>Results</strong>
+          </div>
+          <div class="topbar-actions">
+            <span class="term-pill"><span class="status-dot"></span> Academic records</span>
+          </div>
+        </header>
+
+        <section class="page-heading">
+          <div>
+            <p class="eyebrow">ACADEMIC RECORDS</p>
+            <h1>Results</h1>
+          </div>
+        </section>
+
+        <% if (message) { %>
+          <div class="error-box"><%= message %></div>
+        <% } %>
+
+        <div class="panel form-panel">
+          <h2>Enter result</h2>
+          <form method="POST" action="/results" class="inline-form">
+            <select name="student_id" required>
+              <option value="">Student</option>
+              <% students.forEach((student) => { %>
+                <option value="<%= student.id %>"><%= student.student_id %> · <%= student.first_name %> <%= student.last_name %></option>
+              <% }) %>
+            </select>
+
+            <select name="subject_id" required>
+              <option value="">Subject</option>
+              <% subjects.forEach((subject) => { %>
+                <option value="<%= subject.id %>"><%= subject.name %></option>
+              <% }) %>
+            </select>
+
+            <input type="text" name="assessment" placeholder="Assessment" required />
+            <select name="term" required>
+              <option value="">Term</option>
+              <option value="Term 1">Term 1</option>
+              <option value="Term 2">Term 2</option>
+              <option value="Term 3">Term 3</option>
+            </select>
+            <input type="number" name="score" min="0" max="100" placeholder="Score" required />
+            <button type="submit" class="button button-primary">Save result</button>
+          </form>
+        </div>
+
+        <article class="panel table-panel">
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Class</th>
+                  <th>Subject</th>
+                  <th>Assessment</th>
+                  <th>Term</th>
+                  <th>Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% results.forEach((result) => { %>
+                  <tr>
+                    <td><%= result.first_name %> <%= result.last_name %> (<%= result.student_id %>)</td>
+                    <td><%= result.class_name %></td>
+                    <td><%= result.subject_name %></td>
+                    <td><%= result.assessment %></td>
+                    <td><%= result.term %></td>
+                    <td><span class="score-cell"><%= result.score %></span></td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </main>
+    </div>
+  </body>
+</html>
