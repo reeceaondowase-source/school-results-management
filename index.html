@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7fb">
+  <meta name="description" content="A simple school results management dashboard for students, classes, and academic results.">
+  <title>Classroom — School Results</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#dashboard" aria-label="Classroom home">
+        <span class="brand-mark">C</span><span class="brand-name">classroom<span class="brand-dot">.</span></span>
+      </a>
+      <div class="school-switcher"><span class="school-avatar">GH</span><span class="school-label"><strong>Greenwood High</strong><small>School workspace</small></span><span class="chevron">⌄</span></div>
+      <p class="nav-caption">WORKSPACE</p>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-link active" data-view="dashboard"><span class="nav-icon">▦</span>Overview</button>
+        <button class="nav-link" data-view="students"><span class="nav-icon">♙</span>Students <span class="nav-count" id="studentNavCount">0</span></button>
+        <button class="nav-link" data-view="results"><span class="nav-icon">▤</span>Results</button>
+        <button class="nav-link" data-view="classes"><span class="nav-icon">▣</span>Classes</button>
+        <button class="nav-link" data-view="reports"><span class="nav-icon">▧</span>Reports</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card"><span class="help-icon">✦</span><strong>Need a hand?</strong><p>Get help managing your school results.</p><a href="mailto:support@example.com">Contact support <span>↗</span></a></div>
+        <button class="profile-button"><span class="profile-avatar">AO</span><span class="profile-copy"><strong>Admin Officer</strong><small>School administrator</small></span><span class="more">···</span></button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Open navigation">☰</button>
+        <div class="breadcrumbs"><span>Greenwood High</span><span class="crumb-slash">/</span><strong id="breadcrumbCurrent">Overview</strong></div>
+        <div class="topbar-actions"><span class="term-pill"><span class="status-dot"></span> 2024 / 2025 <span class="term-divider">·</span> Term 2</span><button class="icon-button" aria-label="Notifications">♧<i></i></button><span class="top-avatar">AO</span></div>
+      </header>
+
+      <section class="view active" id="view-dashboard">
+        <div class="page-heading"><div><p class="eyebrow">SUNDAY, 16 FEBRUARY 2025</p><h1>Good morning, Admin <span class="wave">✦</span></h1><p class="subheading">Here’s what’s happening at your school today.</p></div><button class="button button-primary" data-action="add-student"><span>＋</span> Add student</button></div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-top"><span>Total students</span><span class="stat-icon indigo">♙</span></div><div class="stat-value" id="totalStudents">0</div><div class="stat-foot"><span class="trend positive">↗ Active roster</span><span class="muted">this academic year</span></div></article>
+          <article class="stat-card"><div class="stat-top"><span>Results recorded</span><span class="stat-icon mint">▤</span></div><div class="stat-value" id="resultsRecorded">0</div><div class="stat-foot"><span class="trend positive">↗ <span id="resultCoverage">0%</span></span><span class="muted">of expected results</span></div></article>
+          <article class="stat-card"><div class="stat-top"><span>Average performance</span><span class="stat-icon amber">✳</span></div><div class="stat-value"><span id="averageScore">0</span><small class="value-unit">%</small></div><div class="stat-foot"><span class="trend positive">Term 2</span><span class="muted">across all subjects</span></div></article>
+          <article class="stat-card"><div class="stat-top"><span>Classes</span><span class="stat-icon rose">▣</span></div><div class="stat-value" id="totalClasses">0</div><div class="stat-foot"><span class="trend neutral">Academic year</span><span class="muted">2024 / 2025</span></div></article>
+        </div>
+        <div class="dashboard-grid">
+          <article class="panel performance-panel"><div class="panel-heading"><div><h2>Class performance</h2><p>Average scores by class · Term 2</p></div><button class="text-button" data-view="reports">View report <span>→</span></button></div><div class="chart-wrap"><div class="chart-y-labels"><span>100</span><span>75</span><span>50</span><span>25</span><span>0</span></div><div class="chart-area"><div class="chart-gridlines"><i></i><i></i><i></i><i></i><i></i></div><div class="chart-bars" id="performanceChart"></div></div></div></article>
+          <article class="panel subject-panel"><div class="panel-heading"><div><h2>Subject overview</h2><p>Average score by subject</p></div><span class="mini-period">TERM 2</span></div><div class="subject-list" id="subjectOverview"></div></article>
+        </div>
+        <article class="panel table-panel"><div class="panel-heading"><div><h2>Recent results</h2><p>Latest scores entered by your school</p></div><button class="text-button" data-view="results">All results <span>→</span></button></div><div class="table-scroll"><table><thead><tr><th>STUDENT</th><th>CLASS</th><th>SUBJECT</th><th>ASSESSMENT</th><th>SCORE</th><th>GRADE</th></tr></thead><tbody id="recentResultsBody"></tbody></table></div></article>
+      </section>
+
+      <section class="view" id="view-students">
+        <div class="page-heading"><div><p class="eyebrow">SCHOOL DIRECTORY</p><h1>Students</h1><p class="subheading">Manage your student records and class placements.</p></div><button class="button button-primary" data-action="add-student"><span>＋</span> Add student</button></div>
+        <article class="panel table-panel full-panel"><div class="toolbar"><div class="search-box"><span>⌕</span><input id="studentSearch" type="search" placeholder="Search students..." aria-label="Search students"></div><select class="select-control" id="studentClassFilter" aria-label="Filter by class"><option value="all">All classes</option></select><span class="toolbar-count" id="studentCountLabel"></span></div><div class="table-scroll"><table><thead><tr><th>STUDENT</th><th>STUDENT ID</th><th>CLASS</th><th>GENDER</th><th>RESULTS</th><th>AVERAGE</th></tr></thead><tbody id="studentsTableBody"></tbody></table></div></article>
+      </section>
+
+      <section class="view" id="view-results">
+        <div class="page-heading"><div><p class="eyebrow">ACADEMIC RECORDS</p><h1>Results</h1><p class="subheading">Review and manage assessment scores across your school.</p></div><button class="button button-primary" data-action="add-result"><span>＋</span> Enter results</button></div>
+        <article class="panel table-panel full-panel"><div class="toolbar"><div class="search-box"><span>⌕</span><input id="resultSearch" type="search" placeholder="Search student or subject..." aria-label="Search results"></div><select class="select-control" id="resultClassFilter" aria-label="Filter results by class"><option value="all">All classes</option></select><select class="select-control" id="resultSubjectFilter" aria-label="Filter by subject"><option value="all">All subjects</option></select><button class="button button-outline" id="exportResults">↓ Export CSV</button></div><div class="table-scroll"><table><thead><tr><th>STUDENT</th><th>CLASS</th><th>SUBJECT</th><th>ASSESSMENT</th><th>TERM</th><th>SCORE</th><th>GRADE</th></tr></thead><tbody id="resultsTableBody"></tbody></table></div><div class="empty-state hidden" id="emptyResults">No results match your search.</div></article>
+      </section>
+
+      <section class="view" id="view-classes">
+        <div class="page-heading"><div><p class="eyebrow">ACADEMIC STRUCTURE</p><h1>Classes</h1><p class="subheading">Class summaries and subject performance for this term.</p></div><span class="term-pill"><span class="status-dot"></span> Term 2 · 2024 / 2025</span></div>
+        <div class="class-grid" id="classGrid"></div>
+      </section>
+
+      <section class="view" id="view-reports">
+        <div class="page-heading"><div><p class="eyebrow">SCHOOL INSIGHTS</p><h1>Reports</h1><p class="subheading">A snapshot of academic performance across your school.</p></div><button class="button button-outline" id="printReport">↗ Print report</button></div>
+        <div class="stats-grid report-stats"><article class="stat-card"><div class="stat-top"><span>School average</span><span class="stat-icon indigo">✳</span></div><div class="stat-value"><span id="reportAverage">0</span><small class="value-unit">%</small></div><div class="stat-foot"><span class="muted">All recorded subjects</span></div></article><article class="stat-card"><div class="stat-top"><span>Passing students</span><span class="stat-icon mint">✓</span></div><div class="stat-value" id="passingStudents">0</div><div class="stat-foot"><span class="muted">Average score ≥ 50%</span></div></article><article class="stat-card"><div class="stat-top"><span>Top subject</span><span class="stat-icon amber">★</span></div><div class="stat-value subject-stat" id="topSubject">—</div><div class="stat-foot"><span class="muted" id="topSubjectAverage">No scores yet</span></div></article><article class="stat-card"><div class="stat-top"><span>Results entered</span><span class="stat-icon rose">▤</span></div><div class="stat-value" id="reportResultCount">0</div><div class="stat-foot"><span class="muted">This term</span></div></article></div>
+        <article class="panel table-panel"><div class="panel-heading"><div><h2>Class summary</h2><p>Performance and result coverage by class</p></div></div><div class="table-scroll"><table><thead><tr><th>CLASS</th><th>STUDENTS</th><th>RESULTS</th><th>AVERAGE</th><th>PASS RATE</th></tr></thead><tbody id="classSummaryBody"></tbody></table></div></article>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop hidden" id="modalBackdrop" role="presentation"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-heading"><div><p class="eyebrow">GREENWOOD HIGH</p><h2 id="modalTitle">Add student</h2></div><button class="modal-close" id="modalClose" aria-label="Close dialog">×</button></div><form id="studentForm" class="form-grid"><label>First name<input name="firstName" required maxlength="40" placeholder="e.g. Maya"></label><label>Last name<input name="lastName" required maxlength="40" placeholder="e.g. Johnson"></label><label>Student ID<input name="studentId" required maxlength="20" placeholder="e.g. GH-210"></label><label>Class<select name="className" required></select></label><label>Gender<select name="gender" required><option value="">Select gender</option><option>Female</option><option>Male</option><option>Other</option></select></label><div class="form-actions"><button type="button" class="button button-outline" id="cancelModal">Cancel</button><button type="submit" class="button button-primary">Save student</button></div></form></section></div>
+  <div class="modal-backdrop hidden" id="resultModalBackdrop" role="presentation"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="resultModalTitle"><div class="modal-heading"><div><p class="eyebrow">ACADEMIC RECORDS</p><h2 id="resultModalTitle">Enter result</h2></div><button class="modal-close" id="resultModalClose" aria-label="Close dialog">×</button></div><form id="resultForm" class="form-grid"><label>Student<select name="studentId" required></select></label><label>Subject<select name="subject" required></select></label><label>Assessment<input name="assessment" required maxlength="40" placeholder="e.g. Mid-term exam"></label><label>Score (out of 100)<input name="score" type="number" min="0" max="100" required placeholder="e.g. 85"></label><label>Term<select name="term" required><option>Term 1</option><option selected>Term 2</option><option>Term 3</option></select></label><div class="form-actions"><button type="button" class="button button-outline" id="cancelResultModal">Cancel</button><button type="submit" class="button button-primary">Save result</button></div></form></section></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
